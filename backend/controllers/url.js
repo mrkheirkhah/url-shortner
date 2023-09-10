@@ -1,19 +1,18 @@
 const shortid = require("shortid");
-const Url = require("./models/Url");
-const { validateUrl } = require("./utils/urlValidator");
+const Url = require("../models/Url");
+const { validateUrl } = require("../utils/urlValidator");
 
 async function GetAll(req, res) {
-  Url.find((error, data) => {
-    if (error) {
-      return next(error);
-    } else {
-      res.json(data);
-    }
-  });
+  try {
+    const data = await Url.find();
+    res.json(data);
+  } catch (err) {
+    return next(error);
+  }
 }
 
 async function Shorten(req, res) {
-  console.log("HERE", req.body.url);
+  console.log("HERE", req.body.origUrl);
   const { origUrl } = req.body;
   const base = `http://localhost:3333`;
 
@@ -27,7 +26,7 @@ async function Shorten(req, res) {
         const shortUrl = `${base}/${urlId}`;
 
         url = new Url({
-          origUrl,
+          originUrl: origUrl,
           shortUrl,
           urlId,
           date: new Date(),

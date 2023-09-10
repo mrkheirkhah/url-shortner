@@ -3,10 +3,10 @@ const router = express.Router();
 const { ViewUrl } = require("../controllers/index");
 const { GetAll, Shorten } = require("../controllers/url");
 
-app.get("/:urlId", ViewUrl);
+router.get("/all", GetAll);
 
-app.post("/short", Shorten);
+router.post("/short", Shorten);
 
-app.get("/all", GetAll);
+router.get("/:urlId", ViewUrl);
 
 module.exports = router;
